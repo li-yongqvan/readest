@@ -20,6 +20,7 @@ import { useSettingsStore } from '@/store/settingsStore';
 import { useReaderStore } from '@/store/readerStore';
 import { useNotebookStore } from '@/store/notebookStore';
 import { useSidebarStore } from '@/store/sidebarStore';
+import { publishExplainSelection } from '@/app/reader/components/explain/publishSelection';
 import { useCustomDictionaryStore } from '@/store/customDictionaryStore';
 import { isSystemDictionaryEnabled } from '@/services/dictionaries/registry';
 import { invokeSystemDictionary } from '@/services/dictionaries/systemDictionary';
@@ -1298,6 +1299,11 @@ const Annotator: React.FC<{ bookKey: string; contentInsets: Insets; gridInsets?:
   };
 
   useEffect(() => {
+    // M2 explain sidebar: forward the fresh selection before any early return
+    // below (popup positioning, quick actions) can drop it. The publisher only
+    // writes the explain store; opening the sidebar is SideBar's own listener.
+    publishExplainSelection(selection);
+
     // One-tap highlighting (#5983): with the highlight tool on the toolbar the
     // style/color strip opens with the popup, so a color pick highlights the
     // fresh selection directly (HighlightOptions calls handleHighlight, which

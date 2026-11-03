@@ -3,7 +3,7 @@ import React from 'react';
 import { MdBookmarkBorder } from 'react-icons/md';
 import { IoIosList } from 'react-icons/io';
 import { PiNotePencil } from 'react-icons/pi';
-import { LuMessageSquare } from 'react-icons/lu';
+import { LuMessageSquare, LuSparkles } from 'react-icons/lu';
 
 import { useEnv } from '@/context/EnvContext';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -23,7 +23,7 @@ const TabNavigation: React.FC<{
 
   const forceMobileLayout = isForcedMobileLayout(appService?.isMobile, isIPhoneDuo);
   const isMobile = forceMobileLayout || window.innerWidth < 640 || window.innerHeight < 640;
-  const tabs = ['toc', 'annotations', 'bookmarks', ...(aiEnabled ? ['history'] : [])];
+  const tabs = ['toc', 'annotations', 'bookmarks', ...(aiEnabled ? ['history'] : []), 'explain'];
 
   const getTabLabel = (tab: string) => {
     switch (tab) {
@@ -35,6 +35,8 @@ const TabNavigation: React.FC<{
         return _('Bookmark');
       case 'history':
         return _('Chat');
+      case 'explain':
+        return _('Explain');
       default:
         return '';
     }
@@ -76,6 +78,8 @@ const TabNavigation: React.FC<{
               <PiNotePencil className='mx-auto' />
             ) : tab === 'bookmarks' ? (
               <MdBookmarkBorder className='mx-auto' />
+            ) : tab === 'explain' ? (
+              <LuSparkles className='mx-auto' />
             ) : (
               <LuMessageSquare className='mx-auto' />
             )}

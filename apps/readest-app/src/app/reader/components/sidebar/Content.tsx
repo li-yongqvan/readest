@@ -13,11 +13,13 @@ import TOCView from './TOCView';
 import BooknoteView from './BooknoteView';
 import TabNavigation from './TabNavigation';
 import ChatHistoryView from './ChatHistoryView';
+import ExplainView from '../explain/ExplainView';
 
 const SidebarContent: React.FC<{
   bookDoc: BookDoc;
   sideBarBookKey: string;
-}> = ({ bookDoc, sideBarBookKey }) => {
+  isFixedLayout?: boolean;
+}> = ({ bookDoc, sideBarBookKey, isFixedLayout = false }) => {
   const { setHoveredBookKey } = useReaderStore();
   const { setSideBarVisible, setSearchBarVisible } = useSidebarStore();
   const { getConfig, setConfig } = useBookDataStore();
@@ -121,6 +123,9 @@ const SidebarContent: React.FC<{
               )}
               {targetTab === 'bookmarks' && (
                 <BooknoteView type='bookmark' toc={bookDoc.toc ?? []} bookKey={sideBarBookKey} />
+              )}
+              {targetTab === 'explain' && (
+                <ExplainView bookKey={sideBarBookKey} isFixedLayout={isFixedLayout} />
               )}
             </div>
           </OverlayScrollbarsComponent>

@@ -283,7 +283,11 @@ const SideBar = ({}) => {
             onSelectResult={handleSearchResultClick}
           />
         ) : (
-          <SidebarContent bookDoc={bookDoc} sideBarBookKey={sideBarBookKey!} />
+          <SidebarContent
+            bookDoc={bookDoc}
+            sideBarBookKey={sideBarBookKey!}
+            isFixedLayout={bookData.isFixedLayout}
+          />
         )}
       </div>
     </>
