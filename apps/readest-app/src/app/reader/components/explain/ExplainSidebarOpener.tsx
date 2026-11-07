@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from 'react';
 import { useBookDataStore } from '@/store/bookDataStore';
 import { useExplainStore } from '@/store/explainStore';
 import { useSidebarStore } from '@/store/sidebarStore';
+import { runExplain } from './runExplain';
 
 // Watches the explain store and, whenever a *new* selection lands, opens the
 // sidebar on the explain tab — whatever tab was active (Q1/Q11: "select and
@@ -32,6 +33,7 @@ const ExplainSidebarOpener: React.FC = () => {
         viewSettings: { ...config.viewSettings, sideBarTab: 'explain' },
       });
     }
+    void runExplain();
   }, [selection, setSideBarBookKey, setSideBarVisible, getConfig, setConfig]);
 
   return null;
