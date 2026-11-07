@@ -38,6 +38,7 @@ const result = { term: 'deep module', def: 'd', explain: 'e' };
 
 const configured = {
   aiSettings: {
+    enabled: true,
     provider: 'openrouter',
     openrouterApiKey: 'sk-test',
     openrouterBaseUrl: 'https://api.deepseek.com',
@@ -81,7 +82,18 @@ describe('runExplain', () => {
 
   test('unconfigured provider short-circuits to an unconfigured error', async () => {
     useSettingsStore.setState({
-      settings: { aiSettings: { provider: 'ollama' } },
+      settings: { aiSettings: { enabled: true, provider: 'ollama' } },
+    } as never);
+    useExplainStore.getState().setSelection(selection);
+    await runExplain();
+    expect(useExplainStore.getState().status).toBe('error');
+    expect(useExplainStore.getState().error?.kind).toBe('unconfigured');
+    expect(requestExplanation).not.toHaveBeenCalled();
+  });
+
+  test('AI master switch off short-circuits to unconfigured without a request', async () => {
+    useSettingsStore.setState({
+      settings: { aiSettings: { ...configured.aiSettings, enabled: false } },
     } as never);
     useExplainStore.getState().setSelection(selection);
     await runExplain();

@@ -20,7 +20,11 @@ export const runExplain = async (): Promise<void> => {
   const requestId = useExplainStore.getState().startRequest();
 
   try {
-    if (aiSettings?.provider !== 'openrouter' || !aiSettings.openrouterApiKey) {
+    if (
+      !aiSettings?.enabled ||
+      aiSettings.provider !== 'openrouter' ||
+      !aiSettings.openrouterApiKey
+    ) {
       throw new ExplainRequestError('unconfigured', 'OpenAI Compatible provider is not configured');
     }
     const isFixedLayout =

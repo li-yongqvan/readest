@@ -131,7 +131,7 @@ const ExplainView: React.FC<{ bookKey: string; isFixedLayout: boolean }> = ({
         <div className='bg-base-200 flex flex-col gap-2 rounded-lg p-4'>
           <div className='text-base-content/80 text-sm'>
             {_(
-              'Set up your AI provider in Settings → AI first (OpenAI Compatible, base URL https://api.deepseek.com, model deepseek-chat).',
+              'Enable AI and set up your provider in Settings → AI first (OpenAI Compatible, base URL https://api.deepseek.com, model deepseek-chat).',
             )}
           </div>
         </div>

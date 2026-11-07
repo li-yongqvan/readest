@@ -54,8 +54,17 @@ export const useExplainStore = create<ExplainState>((set, get) => ({
   error: null,
   contextLevel: 0,
   requestId: 0,
-  setSelection: (selection) =>
-    set({ selection, status: 'idle', result: null, error: null, contextLevel: 0 }),
+  setSelection: (selection) => {
+    const prev = get().selection;
+    // Same-text republish (highlight stamp / quick-action hand-back, see
+    // Annotator.tsx and the opener's text dedupe): refresh the payload but
+    // keep the delivered explanation — nothing will re-fire runExplain.
+    if (prev && prev.key === selection.key && prev.text === selection.text) {
+      set({ selection });
+      return;
+    }
+    set({ selection, status: 'idle', result: null, error: null, contextLevel: 0 });
+  },
   startRequest: () => {
     const id = get().requestId + 1;
     set({ requestId: id, status: 'loading', error: null });

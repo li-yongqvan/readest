@@ -30,6 +30,26 @@ describe('explainStore', () => {
     expect(s.contextLevel).toBe(0);
   });
 
+  test('same-text republish preserves a delivered explanation', () => {
+    useExplainStore.getState().setSelection(selection);
+    const id = useExplainStore.getState().startRequest();
+    useExplainStore.getState().resolveRequest(id, result);
+    useExplainStore.getState().setSelection({ ...selection, annotated: true });
+    const s = useExplainStore.getState();
+    expect(s.status).toBe('success');
+    expect(s.result).toEqual(result);
+    expect(s.contextLevel).toBe(0);
+  });
+
+  test('republish with a different key resets even when text matches', () => {
+    useExplainStore.getState().setSelection(selection);
+    const id = useExplainStore.getState().startRequest();
+    useExplainStore.getState().resolveRequest(id, result);
+    useExplainStore.getState().setSelection({ ...selection, key: 'other-book' });
+    expect(useExplainStore.getState().status).toBe('idle');
+    expect(useExplainStore.getState().result).toBeNull();
+  });
+
   test('startRequest increments requestId and sets loading', () => {
     const id1 = useExplainStore.getState().startRequest();
     const id2 = useExplainStore.getState().startRequest();
