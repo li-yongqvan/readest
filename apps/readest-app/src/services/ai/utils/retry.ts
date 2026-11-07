@@ -48,8 +48,13 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, message?: string
       const id = setTimeout(() => {
         reject(new Error(message || `Timeout after ${ms}ms`));
       }, ms);
-      // cleanup timeout if promise resolves first
-      promise.finally(() => clearTimeout(id));
+      // cleanup timeout if promise settles first. Use then(onOk, onErr) rather
+      // than finally(): finally() re-raises a rejection on the derived promise,
+      // which nobody handles — an unhandled rejection on every failed attempt.
+      promise.then(
+        () => clearTimeout(id),
+        () => clearTimeout(id),
+      );
     }),
   ]);
 }
